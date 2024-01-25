@@ -17,7 +17,14 @@ the function below should be the only one in this file.
 
 void split(Node*& in, Node*& odds, Node*& evens)
 {
-  //base case
+  //create head of odd and even
+  Node* oddHead = nullptr;
+  Node* evenHead = nullptr;
+  splitHelper(in, odds, evens, oddHead, evenHead);
+  odds = oddHead;
+  evens = evenHead;
+
+  /*//base case
   if(!in){
     evens = nullptr;
     odds = nullptr;
@@ -30,7 +37,7 @@ void split(Node*& in, Node*& odds, Node*& evens)
   else{//for odd
     odds = in;
     split(in->next, odds, evens->next);
-  }
+  }*/
 
   /*
   //base case end of list
@@ -69,3 +76,43 @@ void split(Node*& in, Node*& odds, Node*& evens)
 }
 
 /* If you needed a helper function, write it here */
+
+void splitHelper(Node*& in, Node*& odds, Node*& evens, Node*& oddHead, Node*& evenHead){
+  //base case of end of the list
+  if(in == nullptr){
+    return;
+  }
+  //allocate a new node and delete for memory leak
+  Node* iniNode = in;
+  Node* newNode = new Node(in->value, nullptr);//initializing constructor
+  in = in->next;
+  delete iniNode;
+  iniNode = nullptr;
+
+  //check even value
+  if(newNode->value %2 == 0){
+    if(evens == nullptr){//check head of the list whether its even or not, then get even value of head of the list
+      evens = newNode;
+      evenHead = newNode;
+      //in = in->next;
+    }else{//if not end of the list, append the new node 
+      evens->next = newNode;
+      evens = evens->next;
+    }
+  }
+  else{//odd works same as even
+    if(odds == nullptr){
+      odds = newNode;
+      oddHead = newNode;
+      //in = in->next;
+    }else{
+      odds->next = newNode;
+      odds = odds->next;
+    }
+  }
+  /// 1,3,4,2,8,7,6
+  /// check whether even or odd and with checking the end of the list
+  /// append the new node if it is not the end of the list.
+  ///recursive
+  splitHelper(in, odds, evens, oddHead, evenHead);
+}
