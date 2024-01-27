@@ -86,6 +86,7 @@ void ULListStr::push_back(const std::string& val)
   }else{//check if tail is not full
     tail_->val[tail_->last] = val;
     tail_->last++;
+    
   }
   size_++;
   
@@ -153,10 +154,10 @@ void ULListStr::push_front(const std::string& val)
     newItem->next = head_;
     head_->prev = newItem; 
     head_ = newItem; 
+    newItem->first = ARRSIZE-1; 
+    newItem->last = ARRSIZE; 
     //allocate node and put data at the end of arr of new node
     newItem->val[ARRSIZE - 1] = val; //end of the arr ARRSIZE -1
-    newItem->last = ARRSIZE; 
-    newItem->first = ARRSIZE-1; 
     size_++; 
   }
   else{//check if head is not full
