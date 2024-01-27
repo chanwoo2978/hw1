@@ -153,7 +153,7 @@ void ULListStr::push_front(const std::string& val)
     newItem->next = head_;
     head_->prev = newItem; 
     head_ = newItem; 
-    newItem->val[ARRSIZE - 1] = val; 
+    newItem->val[ARRSIZE - 1] = val; //end of the arr ARRSIZE -1
     newItem->last = ARRSIZE; 
     newItem->first = ARRSIZE-1; 
     size_++; 
@@ -211,21 +211,41 @@ std::string const & ULListStr::front() const
 
 std::string* ULListStr::getValAtLoc(size_t loc) const
 {
+  //cannot fix valgrind.......
+  /*
   if(loc >= size_ || loc < 0){
     return nullptr;//no node, empty list
   }else{
     Item* newItem = head_;
     int loc_current = 0;
+    int loc_temp = head_->first; //temp location point to first element
+    while(loc_current != loc){//check each elements til determined location
+      loc_current++;
+      loc_temp++;
+      if(loc_temp == newItem->last){
+        newItem = newItem->next;
+        loc_temp = 0;
+      }
+    }
+    return &newItem->val[loc_temp];
+  }
+  */
+  
+  if(loc >= size_ || loc < 0){
+    return nullptr;//no node, empty list
+  }else{
+    Item* newItem = head_;//allocate node
+    int loc_current = 0;
     while(newItem != nullptr){//loop til the end of the node
-      for(size_t i = newItem->first; i < newItem->last; i++){
+      for(int i = newItem->first; i < newItem->last; i++){
         if(loc_current == loc){//loop til find the location
           return &(newItem->val[i]);//dereference of pointer to get val
         }
-        loc_current++;
+        loc_current++;//increment loc_current to keep track of loop
       }
       newItem = newItem->next;
     }
-    return nullptr;
+    return NULL;
   }
-
+  
 }
