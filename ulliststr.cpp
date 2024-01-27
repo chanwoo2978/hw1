@@ -153,6 +153,7 @@ void ULListStr::push_front(const std::string& val)
     newItem->next = head_;
     head_->prev = newItem; 
     head_ = newItem; 
+    //allocate node and put data at the end of arr of new node
     newItem->val[ARRSIZE - 1] = val; //end of the arr ARRSIZE -1
     newItem->last = ARRSIZE; 
     newItem->first = ARRSIZE-1; 
@@ -163,7 +164,6 @@ void ULListStr::push_front(const std::string& val)
     head_->first--; 
     size_++; 
   }
-
   /*
   else if(head_->last !=ARRSIZE){
     head_->val[head_->first-1] = val; 
@@ -212,24 +212,6 @@ std::string const & ULListStr::front() const
 std::string* ULListStr::getValAtLoc(size_t loc) const
 {
   //cannot fix valgrind.......
-  /*
-  if(loc >= size_ || loc < 0){
-    return nullptr;//no node, empty list
-  }else{
-    Item* newItem = head_;
-    int loc_current = 0;
-    int loc_temp = head_->first; //temp location point to first element
-    while(loc_current != loc){//check each elements til determined location
-      loc_current++;
-      loc_temp++;
-      if(loc_temp == newItem->last){
-        newItem = newItem->next;
-        loc_temp = 0;
-      }
-    }
-    return &newItem->val[loc_temp];
-  }
-  */
   
   if(loc >= size_ || loc < 0){
     return nullptr;//no node, empty list
@@ -245,7 +227,7 @@ std::string* ULListStr::getValAtLoc(size_t loc) const
       }
       newItem = newItem->next;
     }
-    return NULL;
+    return NULL;//nothing
   }
   
 }
